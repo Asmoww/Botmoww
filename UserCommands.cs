@@ -176,6 +176,17 @@ namespace Botmoww.UserCommands
             await Context.Channel.SendMessageAsync($">>> **Variable list** | **{Globals.varList.Count}** \n{string.Join("\n", Globals.varList)}");
         }
         #endregion
+
+        #region ping
+        [Command("ping")]
+        public async Task Ping(IGuildUser user, int times)
+        {
+            for(int i = 0; i < times; i++)
+            {
+                await Context.Channel.SendMessageAsync(user.Mention);
+            }
+        }
+        #endregion
     }
     public class InterUserCommands : InteractiveBase
     {
