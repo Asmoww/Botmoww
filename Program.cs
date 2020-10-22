@@ -82,7 +82,7 @@ namespace Botmoww
             if (message.Author.IsBot) return;            
             if (message == null) return;
             if (Globals.blackList.Contains(message.Author.Id)) return;
-            if (message.Content.StartsWith("<@") && message.Content.Contains("298816368231448588")) { await context.Channel.SendMessageAsync(context.Message.Author.Mention + " :ping_pong:"); }
+            if (message.Content.Contains("298816368231448588")) { await context.Channel.SendMessageAsync(context.Message.Author.Mention + " :ping_pong:"); }
             if (Globals.filterList.Any(message.Content.ToLower().Contains)) { await context.Channel.SendMessageAsync(">>> No swearing! :red_car:"); await context.Message.DeleteAsync(); } 
         }
         public async Task RegisterCommand()
