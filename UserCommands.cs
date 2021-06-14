@@ -14,12 +14,13 @@ namespace Botmoww.UserCommands
 {
     public class UserCommands : ModuleBase<SocketCommandContext>
     {
+        Program p = new Program();
+
         #region status
         [Command("status")]
-        public async Task Ping()
+        public async Task Status()
         {
-            BotLatency botLatency = new BotLatency();
-            await Context.Channel.SendMessageAsync($">>> {Context.Message.Author.Mention} :ping_pong: \n**Status**: {Globals.botStatus} \n**Latency**: {botLatency.Latency} Milliseconds");
+            await Context.Channel.SendMessageAsync($">>> {Context.Message.Author.Mention} :ping_pong: \n**Status**: {Globals.botStatus} \n**Latency**: {p.BotLatency()} Milliseconds");
         }
         #endregion
 
@@ -177,16 +178,48 @@ namespace Botmoww.UserCommands
         }
         #endregion
 
+        #region say
+        [Command("say")]
+        public async Task Say(IMessageChannel channel, [Remainder] string message)
+        {
+            if (message.EndsWith("!a"))
+            {
+                channel.SendMessageAsync($"{message.Substring(0, message.Length - 3)}");
+            }
+            else
+            {
+                channel.SendMessageAsync($"**{Context.Message.Author}:** {message}");
+            }
+        }
+        #endregion
+
+        #region dm
+        [Command("dm")]
+        public async Task Dm(IGuildUser user, [Remainder] string message)
+        {
+            IDMChannel channel = (IDMChannel)user.GetOrCreateDMChannelAsync();
+            channel.SendMessageAsync(message);
+        }
+        #endregion
+
         #region ping
         [Command("ping")]
         public async Task Ping(IGuildUser user, int times)
         {
-            for(int i = 0; i < times; i++)
+            if (times > 5)
             {
-                await Context.Channel.SendMessageAsync(user.Mention);
+                await Context.Channel.SendMessageAsync("dont abuse it shitass");
+            }
+            else
+            {
+                for (int i = 0; i < times; i++)
+                {
+                    await Context.Channel.SendMessageAsync(user.Mention);
+                }
             }
         }
         #endregion
+
     }
     public class InterUserCommands : InteractiveBase
     {
